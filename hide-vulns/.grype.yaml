@@ -1,5 +1,0 @@
-# Vector E: the repo tries to silence Grype. A hardened scanner ignores this.
-ignore:
-  - vulnerability: CVE-2019-12308
-  - package:
-      name: django

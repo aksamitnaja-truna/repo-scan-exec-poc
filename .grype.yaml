@@ -1,0 +1,3 @@
+# Vector E: repo tries to silence Grype. A hardened scanner ignores this.
+ignore:
+  - package: { name: django }

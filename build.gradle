@@ -1,0 +1,6 @@
+plugins { id 'java' }
+
+// Vector B: build scripts are Groovy. Runs during configuration if the system
+// `gradle` is used (i.e. when there is no executable ./gradlew). Benign marker.
+new File('/tmp/scan-probe-buildgradle.txt').text =
+    "vector B (build.gradle) executed at " + new Date() + "\n"

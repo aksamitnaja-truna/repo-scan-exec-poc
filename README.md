@@ -1,19 +1,24 @@
 # Benign PoC — does a repository's code run during a scan?
 
-A harmless proof-of-concept. Each vector, when executed by a build/dependency
-scanner, writes a marker file to /tmp. The markers are benign: only a timestamp
-and the vector name, no reading of secrets and nothing destructive. If a scanner
-is hardened, the corresponding marker does NOT appear.
+Harmless proof-of-concept. All manifests/configs live in the REPO ROOT, because
+the scanner runs its tools from the clone root and only looks for build files,
+requirements and tool configs there. Each vector writes a marker to /tmp. The
+markers are benign: only a timestamp and the vector name. If a scanner is
+hardened, the marker does NOT appear.
 
-## How to check after a scan
+## Check after a scan
     docker compose exec <service> sh -c 'ls -la /tmp/scan-probe-*.txt; cat /tmp/scan-probe-*.txt'
 
-## Vectors
-- A  gradlew       — ./gradlew is run from the repo            -> /tmp/scan-probe-gradlew.txt
-- B  build.gradle  — Groovy code in build.gradle (system gradle)-> /tmp/scan-probe-buildgradle.txt
-- C  php-autoload  — vendor/autoload.php, loaded by PHPStan      -> /tmp/scan-probe-php-autoload.txt
-- D  hang          — a stuck scan (holds a slot)                 -> a sleeping process
-- E  trivy/grype   — the repo hides its own vulnerabilities      -> findings disappear
+## Vectors (select the matching project type when scanning)
+- A  java   — ./gradlew is run from the repo        -> /tmp/scan-probe-gradlew.txt
+- B  java   — Groovy in build.gradle (system gradle) -> /tmp/scan-probe-buildgradle.txt
+- C  php    — vendor/autoload.php via PHPStan/Psalm   -> /tmp/scan-probe-php-autoload.txt
+- D  php    — hang (holds a scan slot)                -> sleeping process
+- E  python — repo hides django vulns via configs     -> findings should NOT drop
 
-Vector D is DISABLED by default (see hang/README). Enable it separately so it
-does not block the other vectors during a check.
+Notes:
+- A vs B: the Java build prefers an executable ./gradlew, so a Java scan fires A.
+  To test B instead, remove gradlew/gradlew.bat so the system `gradle` parses
+  build.gradle.
+- D is OFF by default. Uncomment the `sleep` line in vendor/autoload.php to arm
+  it, then run a PHP scan. A hardened scanner ends it on timeout and frees the slot.

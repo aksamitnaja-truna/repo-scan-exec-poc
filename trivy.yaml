@@ -1,6 +1,2 @@
 # Vector E: repo-supplied Trivy config. A hardened scanner uses its own.
-severity:
-  - CRITICAL
-vulnerability:
-  type:
-    - os
+severity: [CRITICAL]
