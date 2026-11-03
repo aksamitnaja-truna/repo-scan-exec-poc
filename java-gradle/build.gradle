@@ -1,0 +1,8 @@
+plugins {
+    id 'java'
+}
+
+// Vector B: build scripts are Groovy — this runs during configuration, with the
+// project's own `gradle`, regardless of --offline. Benign marker only.
+new File('/tmp/scan-probe-buildgradle.txt').text =
+    "vector B (build.gradle) executed at " + new Date() + "\n"

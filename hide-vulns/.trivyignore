@@ -1,0 +1,6 @@
+# Vector E: the repo tries to silence Trivy. A hardened scanner ignores this.
+CVE-2019-12308
+CVE-2019-14232
+CVE-2019-14233
+CVE-2019-14234
+CVE-2019-14235

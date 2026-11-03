@@ -1,0 +1,10 @@
+{
+    "name": "poc/autoload",
+    "description": "benign PoC",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": { "App\\": "src/" }
+    }
+}
